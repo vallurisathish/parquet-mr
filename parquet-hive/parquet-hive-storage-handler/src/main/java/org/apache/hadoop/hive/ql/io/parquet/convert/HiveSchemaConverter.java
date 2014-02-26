@@ -13,23 +13,14 @@
  */
 package org.apache.hadoop.hive.ql.io.parquet.convert;
 
-import java.util.List;
-
 import org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector.Category;
-import org.apache.hadoop.hive.serde2.typeinfo.ListTypeInfo;
-import org.apache.hadoop.hive.serde2.typeinfo.MapTypeInfo;
-import org.apache.hadoop.hive.serde2.typeinfo.StructTypeInfo;
-import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
-import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoFactory;
-
-import parquet.schema.GroupType;
-import parquet.schema.MessageType;
-import parquet.schema.OriginalType;
-import parquet.schema.PrimitiveType;
+import org.apache.hadoop.hive.serde2.typeinfo.*;
+import parquet.schema.*;
 import parquet.schema.PrimitiveType.PrimitiveTypeName;
-import parquet.schema.Type;
 import parquet.schema.Type.Repetition;
+
+import java.util.List;
 
 public class HiveSchemaConverter {
 
@@ -99,8 +90,8 @@ public class HiveSchemaConverter {
   // 1 anonymous element "array_element"
   private static GroupType convertArrayType(final String name, final ListTypeInfo typeInfo) {
     final TypeInfo subType = typeInfo.getListElementTypeInfo();
-    return listWrapper(name, OriginalType.LIST, new GroupType(Repetition.REPEATED,
-        ParquetHiveSerDe.ARRAY.toString(), convertType("array_element", subType)));
+      return new GroupType(Repetition.OPTIONAL, name, OriginalType.LIST,convertType("array", subType, Repetition.REPEATED));
+    //return listWrapper(name, OriginalType.LIST,convertType(name, typeInfo, Repetition.REPEATED));
   }
 
   // An optional group containing multiple elements

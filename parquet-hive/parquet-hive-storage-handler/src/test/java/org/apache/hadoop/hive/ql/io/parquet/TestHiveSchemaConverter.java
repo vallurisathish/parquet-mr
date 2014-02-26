@@ -13,19 +13,18 @@
  */
 package org.apache.hadoop.hive.ql.io.parquet;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.hadoop.hive.ql.io.parquet.convert.HiveSchemaConverter;
+import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
+import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils;
+import org.junit.Test;
+import parquet.schema.MessageType;
+import parquet.schema.MessageTypeParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.hadoop.hive.ql.io.parquet.convert.HiveSchemaConverter;
-import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
-import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils;
-import org.junit.Test;
-
-import parquet.schema.MessageType;
-import parquet.schema.MessageTypeParser;
+import static org.junit.Assert.assertEquals;
 
 public class TestHiveSchemaConverter {
 

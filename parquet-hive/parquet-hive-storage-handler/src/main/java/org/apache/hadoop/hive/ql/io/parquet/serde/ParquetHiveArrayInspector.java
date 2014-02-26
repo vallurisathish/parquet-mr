@@ -13,13 +13,13 @@
  */
 package org.apache.hadoop.hive.ql.io.parquet.serde;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.SettableListObjectInspector;
 import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.Writable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The ParquetHiveArrayInspector will inspect an ArrayWritable, considering it as an Hive array.<br />
@@ -62,14 +62,8 @@ public class ParquetHiveArrayInspector implements SettableListObjectInspector {
         return null;
       }
 
-      final Writable subObj = listContainer[0];
-
-      if (subObj == null) {
-        return null;
-      }
-
-      if (index >= 0 && index < ((ArrayWritable) subObj).get().length) {
-        return ((ArrayWritable) subObj).get()[index];
+      if (index >= 0 && index < listContainer.length) {
+        return listContainer[index];
       } else {
         return null;
       }
@@ -87,17 +81,11 @@ public class ParquetHiveArrayInspector implements SettableListObjectInspector {
     if (data instanceof ArrayWritable) {
       final Writable[] listContainer = ((ArrayWritable) data).get();
 
-      if (listContainer == null || listContainer.length == 0) {
+      if (listContainer == null) {
         return -1;
       }
 
-      final Writable subObj = listContainer[0];
-
-      if (subObj == null) {
-        return 0;
-      }
-
-      return ((ArrayWritable) subObj).get().length;
+      return listContainer.length;
     }
 
     throw new UnsupportedOperationException("Cannot inspect " + data.getClass().getCanonicalName());
@@ -112,20 +100,13 @@ public class ParquetHiveArrayInspector implements SettableListObjectInspector {
     if (data instanceof ArrayWritable) {
       final Writable[] listContainer = ((ArrayWritable) data).get();
 
-      if (listContainer == null || listContainer.length == 0) {
+      if (listContainer == null) {
         return null;
       }
 
-      final Writable subObj = listContainer[0];
-
-      if (subObj == null) {
-        return null;
-      }
-
-      final Writable[] array = ((ArrayWritable) subObj).get();
       final List<Writable> list = new ArrayList<Writable>();
 
-      for (final Writable obj : array) {
+      for (final Writable obj : listContainer) {
         list.add(obj);
       }
 
