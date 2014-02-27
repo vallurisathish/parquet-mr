@@ -13,10 +13,7 @@
  */
 package org.apache.hadoop.hive.ql.io.parquet;
 
-import java.util.Properties;
-
 import junit.framework.TestCase;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe;
 import org.apache.hadoop.hive.ql.io.parquet.writable.BinaryWritable;
@@ -29,8 +26,9 @@ import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Writable;
-
 import parquet.io.api.Binary;
+
+import java.util.Properties;
 
 public class TestParquetSerDe extends TestCase {
 
@@ -65,13 +63,11 @@ public class TestParquetSerDe extends TestCase {
       mapContainer[0] = new ArrayWritable(Writable.class, map);
       arr[6] = new ArrayWritable(Writable.class, mapContainer);
 
-      final Writable[] arrayContainer = new Writable[1];
       final Writable[] array = new Writable[5];
       for (int i = 0; i < 5; ++i) {
         array[i] = new BinaryWritable(Binary.fromString("elem_" + i));
       }
-      arrayContainer[0] = new ArrayWritable(Writable.class, array);
-      arr[7] = new ArrayWritable(Writable.class, arrayContainer);
+      arr[7] = new ArrayWritable(Writable.class, array);
 
       final ArrayWritable arrWritable = new ArrayWritable(Writable.class, arr);
       // Test

@@ -13,16 +13,15 @@
  */
 package org.apache.hadoop.hive.ql.io.parquet.serde;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;
 import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Writable;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestParquetHiveArrayInspector extends TestCase {
 
@@ -51,16 +50,16 @@ public class TestParquetHiveArrayInspector extends TestCase {
   @Test
   public void testEmptyContainer() {
     final ArrayWritable list = new ArrayWritable(ArrayWritable.class, new ArrayWritable[0]);
-    assertEquals("Wrong size", -1, inspector.getListLength(list));
-    assertNull("Should be null", inspector.getList(list));
+    assertEquals("Wrong size", 0, inspector.getListLength(list));
+    //assertNull("Should be null", inspector.getList(list));
     assertNull("Should be null", inspector.getListElement(list, 0));
   }
 
   @Test
   public void testRegularList() {
-    final ArrayWritable internalList = new ArrayWritable(Writable.class,
-            new Writable[]{new IntWritable(3), new IntWritable(5), new IntWritable(1)});
-    final ArrayWritable list = new ArrayWritable(ArrayWritable.class, new ArrayWritable[]{internalList});
+//    final ArrayWritable internalList = new ArrayWritable(Writable.class,
+//            new Writable[]{new IntWritable(3), new IntWritable(5), new IntWritable(1)});
+    final ArrayWritable list = new ArrayWritable(ArrayWritable.class, new Writable[]{new IntWritable(3), new IntWritable(5), new IntWritable(1)});
 
     final List<Writable> expected = new ArrayList<Writable>();
     expected.add(new IntWritable(3));

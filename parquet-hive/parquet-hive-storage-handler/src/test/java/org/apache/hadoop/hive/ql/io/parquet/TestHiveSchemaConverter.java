@@ -77,9 +77,7 @@ public class TestHiveSchemaConverter {
             "array<int>",
             "message hive_schema {\n"
             + "  optional group arrayCol (LIST) {\n"
-            + "    repeated group bag {\n"
-            + "      optional int32 array_element;\n"
-            + "    }\n"
+            + "      repeated int32 array;\n"
             + "  }\n"
             + "}\n");
   }
