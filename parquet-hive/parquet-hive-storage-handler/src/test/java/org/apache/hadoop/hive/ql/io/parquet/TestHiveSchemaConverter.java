@@ -19,6 +19,8 @@ import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils;
 import org.junit.Test;
 import parquet.schema.MessageType;
 import parquet.schema.MessageTypeParser;
+import parquet.schema.OriginalType;
+import parquet.schema.Type.Repetition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,5 +109,27 @@ public class TestHiveSchemaConverter {
             + "    }\n"
             + "  }\n"
             + "}\n");
+  }
+
+  @Test
+  public void testMapOriginalType() throws Exception {
+    final String hiveColumnTypes = "map<string,string>";
+    final String hiveColumnNames = "mapCol";
+    final List<String> columnNames = createHiveColumnsFrom(hiveColumnNames);
+    final List<TypeInfo> columnTypes = createHiveTypeInfoFrom(hiveColumnTypes);
+    final MessageType messageTypeFound = HiveSchemaConverter.convert(columnNames, columnTypes);
+    // this messageType only has one optional field, whose name is mapCol, original Type is MAP
+    assertEquals(1, messageTypeFound.getFieldCount());
+    parquet.schema.Type topLevel = messageTypeFound.getFields().get(0);
+    assertEquals("mapCol",topLevel.getName());
+    assertEquals(OriginalType.MAP, topLevel.getOriginalType());
+    assertEquals(Repetition.OPTIONAL, topLevel.getRepetition());
+
+    assertEquals(1, topLevel.asGroupType().getFieldCount());
+    parquet.schema.Type secondLevel = topLevel.asGroupType().getFields().get(0);
+    //there is one repeated field for mapCol, the field name is "map" and its original Type is MAP_KEY_VALUE;
+    assertEquals("map", secondLevel.getName());
+    assertEquals(OriginalType.MAP_KEY_VALUE, secondLevel.getOriginalType());
+    assertEquals(Repetition.REPEATED, secondLevel.getRepetition());
   }
 }
