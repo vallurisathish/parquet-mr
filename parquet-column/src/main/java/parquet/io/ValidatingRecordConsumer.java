@@ -15,17 +15,16 @@
  */
 package parquet.io;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-
 import parquet.Log;
 import parquet.io.api.Binary;
 import parquet.io.api.RecordConsumer;
 import parquet.schema.MessageType;
-import parquet.schema.Type;
 import parquet.schema.PrimitiveType.PrimitiveTypeName;
+import parquet.schema.Type;
 import parquet.schema.Type.Repetition;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 
 /**
